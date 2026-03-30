@@ -31,9 +31,10 @@ want to sign it with the `com.apple.security.get-task-allow` entitlement).
 Instead, the entitlements that the simulator should apply is embedded inside
 the binary in the `__TEXT,__entitlements` section.
 
-Xcode does this automatically by invoking the linker with `-sectcreate`, but
-if you want to run your binary on the simulator without building it in Xcode,
-you can use this crate to do the embedding.
+Xcode [does this automatically](https://github.com/swiftlang/swift-build/blob/swift-6.3-RELEASE/Sources/SWBApplePlatform/Specs/Embedded-Simulator.xcspec)
+by invoking the linker with `-sectcreate`, but if you want to run your binary
+on the simulator without building it in Xcode, you can use this crate to do
+the embedding.
 
 This crate works well with the [`embed_plist`](https://docs.rs/embed_plist/)
 crate for embedding an application's `Info.plist`.
