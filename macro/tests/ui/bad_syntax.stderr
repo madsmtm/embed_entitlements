@@ -1,0 +1,7 @@
+error: failed running `derq`: exit status: 74. Maybe try enabling the `embed_entitlements/pure` feature?
+       derq: couldn't read in data
+
+ --> tests/ui/bad_syntax.rs:5:42
+  |
+5 |     let _ = convert_entitlements_to_der!("bad_syntax.entitlements");
+  |                                          ^^^^^^^^^^^^^^^^^^^^^^^^^

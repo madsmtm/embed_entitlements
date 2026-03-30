@@ -1,0 +1,5 @@
+error: couldn't read `$DIR/tests/ui/no file here`: not found
+ --> tests/ui/not_found.rs:4:42
+  |
+4 |     let _ = convert_entitlements_to_der!("no file here");
+  |                                          ^^^^^^^^^^^^^^

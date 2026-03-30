@@ -1,0 +1,37 @@
+[workspace]
+members = ["macro"]
+
+[package]
+name = "embed_entitlements"
+# Remember to update html_root_url in lib.rs
+version = "0.1.0"
+description = "Embed `.entitlements` directly in your executable binary"
+keywords = ["macos", "ios", "sim", "simulator", "entitlements"]
+categories = ["config", "development-tools::build-utils", "os::macos-apis"]
+authors = ["Mads Marquart <mads@marquart.dk>"]
+edition = "2024"
+rust-version = "1.91"
+repository = "https://github.com/madsmtm/embed_entitlements"
+license = "Zlib OR Apache-2.0 OR MIT"
+include = ["README.md", "src", "tests", "sandbox.entitlements"]
+
+[features]
+# Don't invoke `/usr/bin/derq` command, convert the
+# entitlements using the `apple-codesign` crate.
+#
+# Allows the proc-macro to run in sandboxed environments.
+#
+# This currently requires quite a lot of dependencies, so
+# you might not want this enabled.
+pure = ["embed_entitlements_macro/pure"]
+
+# The proc-macro is only used when targetting the simulator.
+# (We only need to embed `__ents_der` on those targets).
+[target.'cfg(target_env = "sim")'.dependencies]
+embed_entitlements_macro = { version = "0.1.0", path = "./macro" }
+
+[package.metadata.docs.rs]
+targets = ["aarch64-apple-darwin"]
+
+[dev-dependencies]
+object = "0.39.0"

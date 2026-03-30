@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    name: Check formatting and run clippy
+    runs-on: macos-latest
+    steps:
+    - uses: taiki-e/checkout-action@v1
+    - run: rustup component add rustfmt
+    - run: cargo fmt -- --check
+    - run: rustup component add clippy
+    - run: cargo clippy --all-targets
+
+  msrv:
+    name: Check MSRV
+    runs-on: macos-latest
+    steps:
+    - uses: taiki-e/checkout-action@v1
+    - run: rustup toolchain install 1.91 --profile=minimal --no-self-update
+    - run: rustup override set 1.91
+    - run: cargo check --workspace
+
+  test:
+    name: Test
+    runs-on: macos-latest
+    steps:
+    - uses: taiki-e/checkout-action@v1
+    - run: cargo test --workspace
+    - run: rustup target add aarch64-apple-ios-sim
+    - run: xcrun simctl boot "iPhone 17"
+    - run: cargo test --target aarch64-apple-ios-sim
+
+  test-linux:
+    name: Test on Linux
+    runs-on: ubuntu-latest
+    steps:
+    - uses: taiki-e/checkout-action@v1
+    - run: cargo test --workspace
