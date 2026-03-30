@@ -6,6 +6,10 @@ embed_entitlements::embed_entitlements!("../keychain.entitlements");
 /// expected sections.
 #[test]
 fn binary_contains_entitlements() {
+    if !cfg!(target_vendor = "apple") {
+        return;
+    }
+
     let file = std::fs::read(std::env::current_exe().unwrap()).unwrap();
     let file = object::File::parse(&*file).unwrap();
 
