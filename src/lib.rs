@@ -29,12 +29,8 @@ macro_rules! embed_entitlements {
             // Prevents repeated use by creating a linker error.
             // SAFETY: The symbol shouldn't be referenced by anything.
             #[unsafe(no_mangle)]
-            static _EMBED_ENTITLEMENT: [$crate::__core::primitive::u8; SLICE.len()] = *unsafe {
-                $crate::__core::mem::transmute::<
-                    *const $crate::__core::primitive::u8,
-                    &[$crate::__core::primitive::u8; _],
-                >(SLICE.as_ptr())
-            };
+            static _EMBED_ENTITLEMENT: [$crate::__core::primitive::u8; SLICE.len()] =
+                unsafe { *SLICE.as_ptr().cast::<[$crate::__core::primitive::u8; _]>() };
         };
 
         // When compiling for the simulator, convert entitlements to DER and
@@ -47,12 +43,8 @@ macro_rules! embed_entitlements {
             #[used]
             #[unsafe(link_section = "__TEXT,__ents_der")]
             // Don't add no_mangle, we've already asserted uniqueness above.
-            static _EMBED_ENT_DER: [$crate::__core::primitive::u8; SLICE.len()] = *unsafe {
-                $crate::__core::mem::transmute::<
-                    *const $crate::__core::primitive::u8,
-                    &[$crate::__core::primitive::u8; _],
-                >(SLICE.as_ptr())
-            };
+            static _EMBED_ENT_DER: [$crate::__core::primitive::u8; SLICE.len()] =
+                unsafe { *SLICE.as_ptr().cast::<[$crate::__core::primitive::u8; _]>() };
         };
     };
 }
