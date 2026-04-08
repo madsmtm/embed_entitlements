@@ -125,7 +125,7 @@ pub fn convert_entitlements_to_der(input: TokenStream) -> TokenStream {
 // ```
 #[cfg(all(target_os = "macos", not(feature = "pure")))]
 fn convert(path: &Path) -> Result<Vec<u8>, String> {
-    // `derq` segmentation faults on non-existant files, so let's do this
+    // `derq` segmentation faults on non-existent files, so let's do this
     // check to have better error messages.
     if !path.try_exists().unwrap_or(true) {
         return Err(format!("couldn't read `{}`: not found", path.display()));
